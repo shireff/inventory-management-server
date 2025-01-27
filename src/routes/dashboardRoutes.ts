@@ -2,6 +2,12 @@ import { Router } from "express";
 import { getDashboardMetrics } from "../controllers/dashboardController";
 
 const router = Router();
+/**
+ * @swagger
+ * tags:
+ *   - name: Dashboard
+ *     description: API for retrieving dashboard metrics
+ */
 
 /**
  * @swagger
@@ -9,6 +15,8 @@ const router = Router();
  *   get:
  *     summary: Retrieve dashboard metrics
  *     description: Fetch popular products, sales summary, purchase summary, and expense summary for the dashboard.
+ *     tags:
+ *       - Dashboard
  *     responses:
  *       200:
  *         description: Successfully retrieved metrics

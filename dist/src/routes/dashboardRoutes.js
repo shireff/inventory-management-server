@@ -5,10 +5,18 @@ const dashboardController_1 = require("../controllers/dashboardController");
 const router = (0, express_1.Router)();
 /**
  * @swagger
+ * tags:
+ *   - name: Dashboard
+ *     description: API for retrieving dashboard metrics
+ */
+/**
+ * @swagger
  * /dashboard:
  *   get:
  *     summary: Retrieve dashboard metrics
  *     description: Fetch popular products, sales summary, purchase summary, and expense summary for the dashboard.
+ *     tags:
+ *       - Dashboard
  *     responses:
  *       200:
  *         description: Successfully retrieved metrics
