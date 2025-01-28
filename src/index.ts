@@ -6,6 +6,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import dashboardRoutes from "./routes/dashboardRoutes";
 import productsRoutes from "./routes/productsRoutes";
+import usersRoutes from "./routes/userRoutes";
+import expenseRoutes from "./routes/expenseRoutes";
 import setupSwagger from "./swagger";
 dotenv.config();
 const app = express();
@@ -22,6 +24,8 @@ app.use(cors());
 
 app.use("/dashboard", dashboardRoutes);
 app.use("/products", productsRoutes);
+app.use("/users", usersRoutes);
+app.use("/expenses", expenseRoutes);
 
 setupSwagger(app);
 const PORT = process.env.PORT || 3001;
