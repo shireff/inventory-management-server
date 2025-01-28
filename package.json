@@ -7,7 +7,8 @@
     "seed": "ts-node prisma/seed.ts",
     "start": "npn run build && node dist/index.js",
     "dev": "npm run build && concurrently \"npx tsc -w\" \"nodemon --exec ts-node src/index.ts\"",
-    "build": "rimraf dist && npx tsc"
+    "migrate": "prisma migrate deploy",
+    "build": "rimraf dist && npx tsc && npm run migrate"
   },
   "keywords": [],
   "author": "",
