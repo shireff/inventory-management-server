@@ -27,6 +27,7 @@ app.use((0, cors_1.default)({
     origin: [
         "https://inventory-management-client-bay.vercel.app",
         "https://inventory-management-server-production.up.railway.app",
+        "http://localhost:3000",
     ],
     methods: "GET,POST,PUT,DELETE,OPTIONS",
     allowedHeaders: "Content-Type,Authorization",
