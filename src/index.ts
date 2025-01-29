@@ -20,7 +20,17 @@ app.use(
 app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://inventory-management-client-bay.vercel.app",
+      "https://inventory-management-server-production.up.railway.app",
+    ],
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true, 
+  })
+);
 
 app.use("/dashboard", dashboardRoutes);
 app.use("/products", productsRoutes);

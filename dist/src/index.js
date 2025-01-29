@@ -23,7 +23,15 @@ app.use(helmet_1.default.crossOriginResourcePolicy({
 app.use((0, morgan_1.default)("common"));
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: [
+        "https://inventory-management-client-bay.vercel.app",
+        "https://inventory-management-server-production.up.railway.app",
+    ],
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true,
+}));
 app.use("/dashboard", dashboardRoutes_1.default);
 app.use("/products", productsRoutes_1.default);
 app.use("/users", userRoutes_1.default);
