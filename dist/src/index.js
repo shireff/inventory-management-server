@@ -30,7 +30,4 @@ app.use("/users", userRoutes_1.default);
 app.use("/expenses", expenseRoutes_1.default);
 (0, swagger_1.default)(app);
 const PORT = process.env.PORT || 3001;
-exports.default = (req, res) => {
-    app(req, res);
-};
 app.listen(PORT, () => console.log(`Server running on : http://localhost:${PORT}`));
