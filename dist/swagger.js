@@ -144,7 +144,14 @@ const setupSwagger = (app) => {
         res.setHeader('Content-Type', 'application/json');
         res.send(swaggerSpec);
     });
-    app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerSpec));
+    app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerSpec, {
+        explorer: true,
+        customCssUrl: "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.min.css",
+        customJs: [
+            "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui-bundle.min.js",
+            "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui-standalone-preset.min.js",
+        ],
+    }));
     options.definition.servers.forEach((server) => console.log(`Swagger setup complete for server: ${server.url}/api-docs`));
 };
 exports.default = setupSwagger;
