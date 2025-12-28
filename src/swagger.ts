@@ -139,6 +139,10 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 const setupSwagger = (app: Express) => {
+  app.get("/api-docs.json", (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+  });
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   options.definition.servers.forEach((server) =>
     console.log(`Swagger setup complete for server: ${server.url}/api-docs`)

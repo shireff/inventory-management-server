@@ -34,11 +34,11 @@ app.use((0, morgan_1.default)("common"));
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use((0, cors_1.default)());
+(0, swagger_1.default)(app);
 app.use("/dashboard", dashboardRoutes_1.default);
 app.use("/products", productsRoutes_1.default);
 app.use("/users", userRoutes_1.default);
 app.use("/expenses", expenseRoutes_1.default);
-(0, swagger_1.default)(app);
 const PORT = process.env.PORT || 3001;
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     try {

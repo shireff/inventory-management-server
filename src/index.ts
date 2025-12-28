@@ -24,12 +24,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
+setupSwagger(app);
+
 app.use("/dashboard", dashboardRoutes);
 app.use("/products", productsRoutes);
 app.use("/users", usersRoutes);
 app.use("/expenses", expenseRoutes);
 
-setupSwagger(app);
+
 const PORT = process.env.PORT || 3001;
 
 
