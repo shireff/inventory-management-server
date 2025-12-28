@@ -10,22 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createProduct = exports.getProducts = void 0;
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const Products_1 = require("../models/Products");
 const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
         const search = (_a = req.query.search) === null || _a === void 0 ? void 0 : _a.toString();
-        const products = yield prisma.products.findMany({
-            where: {
-                name: {
-                    contains: search,
-                },
-            },
-            orderBy: {
-                productId: "asc",
-            },
-        });
+        const products = yield Products_1.Products.find({
+            name: { $regex: search || "", $options: "i" },
+        }).sort({ productId: 1 });
         if (products.length === 0) {
             res.status(404).json({ error: "No products found" });
             return;
@@ -58,15 +50,14 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 .json({ error: `Missing fields: ${missingFields.join(", ")}` });
             return;
         }
-        const newProduct = yield prisma.products.create({
-            data: {
-                productId,
-                name,
-                price,
-                rating,
-                stockQuantity,
-            },
+        const newProduct = new Products_1.Products({
+            productId,
+            name,
+            price,
+            rating,
+            stockQuantity,
         });
+        yield newProduct.save();
         res.status(201).json(newProduct);
     }
     catch (error) {

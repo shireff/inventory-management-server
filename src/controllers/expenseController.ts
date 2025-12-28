@@ -1,23 +1,18 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { ExpenseByCategory } from "../models/Summaries";
 
-const prisma = new PrismaClient();
 export const getExpenseCategorySummaryRow = async (
   req: Request,
   res: Response
 ) => {
   try {
-    const expenseByCategorySummaryRow = await prisma.expenseByCategory.findMany(
-      {
-        orderBy: {
-          date: "desc",
-        },
-      }
-    );
+    const expenseByCategorySummaryRow = await ExpenseByCategory.find().sort({
+      date: -1,
+    });
 
     const expenseByCategorySummary = expenseByCategorySummaryRow.map(
       (item) => ({
-        ...item,
+        ...item.toObject(),
         amount: item.amount.toString(),
       })
     );

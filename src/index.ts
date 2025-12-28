@@ -9,6 +9,8 @@ import productsRoutes from "./routes/productsRoutes";
 import usersRoutes from "./routes/userRoutes";
 import expenseRoutes from "./routes/expenseRoutes";
 import setupSwagger from "./swagger";
+import mongoose from "mongoose";
+
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -20,18 +22,7 @@ app.use(
 app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(
-//   cors({
-//     origin: [
-//       "https://inventory-management-client-bay.vercel.app",
-//       "https://inventory-management-server-production.up.railway.app",
-//       "http://localhost:3000",
-//     ],
-//     methods: "GET,POST,PUT,DELETE,OPTIONS",
-//     allowedHeaders: "Content-Type,Authorization",
-//     credentials: true,
-//   })
-// );
+app.use(cors());
 
 app.use("/dashboard", dashboardRoutes);
 app.use("/products", productsRoutes);
@@ -41,6 +32,22 @@ app.use("/expenses", expenseRoutes);
 setupSwagger(app);
 const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, () =>
-  console.log(`Server running on : http://localhost:${PORT}`)
-);
+
+const startServer = async () => {
+  try {
+    if (!process.env.MONGO_URL) {
+      throw new Error("MONGO_URL must be defined");
+    }
+    await mongoose.connect(process.env.MONGO_URL);
+    console.log("Connected to MongoDB via Mongoose");
+
+    app.listen(PORT, () =>
+      console.log(`Server running on : http://localhost:${PORT}`)
+    );
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+};
+
+startServer();

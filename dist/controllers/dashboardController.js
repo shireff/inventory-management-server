@@ -10,41 +10,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDashboardMetrics = void 0;
-const client_1 = require("@prisma/client");
-const prisma = new client_1.PrismaClient();
+const Products_1 = require("../models/Products");
+const Summaries_1 = require("../models/Summaries");
 const getDashboardMetrics = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const popularProducts = yield prisma.products.findMany({
-            take: 15,
-            orderBy: {
-                stockQuantity: "desc",
-            },
-        });
-        const salesSummary = yield prisma.salesSummary.findMany({
-            take: 5,
-            orderBy: {
-                date: "desc",
-            },
-        });
-        const purchaseSummary = yield prisma.purchaseSummary.findMany({
-            take: 5,
-            orderBy: {
-                date: "desc",
-            },
-        });
-        const expenseSummary = yield prisma.expenseSummary.findMany({
-            take: 5,
-            orderBy: {
-                date: "desc",
-            },
-        });
-        const expenseByCategorySummaryRaw = yield prisma.expenseByCategory.findMany({
-            take: 5,
-            orderBy: {
-                date: "desc",
-            },
-        });
-        const expenseByCategorySummary = expenseByCategorySummaryRaw.map((item) => (Object.assign(Object.assign({}, item), { amount: item.amount.toString() })));
+        const popularProducts = yield Products_1.Products.find()
+            .sort({ stockQuantity: -1 })
+            .limit(15);
+        const salesSummary = yield Summaries_1.SalesSummary.find().sort({ date: -1 }).limit(5);
+        const purchaseSummary = yield Summaries_1.PurchaseSummary.find()
+            .sort({ date: -1 })
+            .limit(5);
+        const expenseSummary = yield Summaries_1.ExpenseSummary.find()
+            .sort({ date: -1 })
+            .limit(5);
+        const expenseByCategorySummaryRaw = yield Summaries_1.ExpenseByCategory.find()
+            .sort({ date: -1 })
+            .limit(5);
+        const expenseByCategorySummary = expenseByCategorySummaryRaw.map((item) => (Object.assign(Object.assign({}, item.toObject()), { amount: item.amount.toString() })));
         res.status(200).json({
             popularProducts,
             salesSummary,

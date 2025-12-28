@@ -1,20 +1,13 @@
 import { Request, RequestHandler, Response } from "express";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { Products } from "../models/Products";
 
 export const getProducts: RequestHandler = async (req, res): Promise<void> => {
   try {
     const search = req.query.search?.toString();
-    const products = await prisma.products.findMany({
-      where: {
-        name: {
-          contains: search,
-        },
-      },
-      orderBy: {
-        productId: "asc",
-      },
-    });
+    const products = await Products.find({
+      name: { $regex: search || "", $options: "i" },
+    }).sort({ productId: 1 });
+
     if (products.length === 0) {
       res.status(404).json({ error: "No products found" });
       return;
@@ -46,15 +39,16 @@ export const createProduct: RequestHandler = async (
         .json({ error: `Missing fields: ${missingFields.join(", ")}` });
       return;
     }
-    const newProduct = await prisma.products.create({
-      data: {
-        productId,
-        name,
-        price,
-        rating,
-        stockQuantity,
-      },
+
+    const newProduct = new Products({
+      productId,
+      name,
+      price,
+      rating,
+      stockQuantity,
     });
+
+    await newProduct.save();
 
     res.status(201).json(newProduct);
   } catch (error) {

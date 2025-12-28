@@ -1,47 +1,35 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { Products } from "../models/Products";
+import {
+  SalesSummary,
+  PurchaseSummary,
+  ExpenseSummary,
+  ExpenseByCategory,
+} from "../models/Summaries";
 
 export const getDashboardMetrics = async (req: Request, res: Response) => {
   try {
-    const popularProducts = await prisma.products.findMany({
-      take: 15,
-      orderBy: {
-        stockQuantity: "desc",
-      },
-    });
-    const salesSummary = await prisma.salesSummary.findMany({
-      take: 5,
-      orderBy: {
-        date: "desc",
-      },
-    });
-    const purchaseSummary = await prisma.purchaseSummary.findMany({
-      take: 5,
-      orderBy: {
-        date: "desc",
-      },
-    });
+    const popularProducts = await Products.find()
+      .sort({ stockQuantity: -1 })
+      .limit(15);
 
-    const expenseSummary = await prisma.expenseSummary.findMany({
-      take: 5,
-      orderBy: {
-        date: "desc",
-      },
-    });
+    const salesSummary = await SalesSummary.find().sort({ date: -1 }).limit(5);
 
-    const expenseByCategorySummaryRaw = await prisma.expenseByCategory.findMany(
-      {
-        take: 5,
-        orderBy: {
-          date: "desc",
-        },
-      }
-    );
+    const purchaseSummary = await PurchaseSummary.find()
+      .sort({ date: -1 })
+      .limit(5);
+
+    const expenseSummary = await ExpenseSummary.find()
+      .sort({ date: -1 })
+      .limit(5);
+
+    const expenseByCategorySummaryRaw = await ExpenseByCategory.find()
+      .sort({ date: -1 })
+      .limit(5);
+
     const expenseByCategorySummary = expenseByCategorySummaryRaw.map(
       (item) => ({
-        ...item,
+        ...item.toObject(),
         amount: item.amount.toString(),
       })
     );

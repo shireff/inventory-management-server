@@ -21,6 +21,7 @@
     }
   ],
   "env": {
-    "DATABASE_URL": "postgresql://postgres:OhCWaWnLjBLthiRawQiaGaMoNXwoqikG@monorail.proxy.rlwy.net:46020/railway"
+    "DATABASE_URL": "postgresql://postgres:OhCWaWnLjBLthiRawQiaGaMoNXwoqikG@monorail.proxy.rlwy.net:46020/railway",
+    "MONGO_URL": "mongodb+srv://shireffn369:shireffnady@cluster0.qkehe.mongodb.net/inventory-erp?retryWrites=true&w=majority"
   }
 }

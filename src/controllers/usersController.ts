@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { Users } from "../models/Users";
 
-const prisma = new PrismaClient();
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    const users = await prisma.users.findMany();
+    const users = await Users.find();
     res.status(200).json(users);
   } catch (error) {
     console.log("Error From Get Users controller", error);
